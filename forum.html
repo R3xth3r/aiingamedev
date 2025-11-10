@@ -375,6 +375,13 @@
             transform: translateY(0);
         }
 
+        .giscus-container {
+            margin-top: 30px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+        }
     </style>
 
 </head>
@@ -411,64 +418,26 @@
             <p>Про що поговоримо сьогодні?</p>
         </section>
 
-        <section class="content-section fade-in-on-scroll" style="padding: 20px 30px; background: none; box-shadow: none; margin-top: 0; margin-bottom: -20px;">
-            <input type="search" id="forum-search" placeholder="Пошук тем за назвою або вмістом..." 
-                   style="width: 100%; padding: 15px; font-size: 1.1rem; font-family: 'Nunito', sans-serif; border: 2px solid var(--border-color); border-radius: 8px; box-shadow: var(--box-shadow); transition: border-color 0.3s, box-shadow 0.3s;"
-                   onfocus="this.style.borderColor='var(--primary-color-start)'; this.style.boxShadow='0 4px 15px rgba(138, 43, 226, 0.2)';"
-                   onblur="this.style.borderColor='var(--border-color)'; this.style.boxShadow='var(--box-shadow)';">
-        </section>
-        <section class="content-section fade-in-on-scroll" style="padding: 10px 30px; text-align: right; background: none; box-shadow: none; margin-top: 0;">
-            <a href="new-topic.html" style="display: inline-block; text-decoration: none; padding: 12px 25px; background-image: var(--primary-gradient); color: white; border-radius: 8px; box-shadow: var(--box-shadow); font-weight: 700; transition: transform 0.2s ease, box-shadow 0.2s ease;"
-               onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0, 0, 0, 0.15)';"
-               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--box-shadow)';">
-               + Створити нову тему
-            </a>
-        </section>
-
-        <div id="topics-list">
-            <section class="content-section fade-in-on-scroll topic-item">
-                <h2>Обговорення: Нові моделі AI для NPC</h2>
-                <p style="font-size: 0.95rem; color: var(--secondary-text-color); margin-bottom: 20px; opacity: 0.8;">
-                    <strong>Автор:</strong> admin | <strong>Дата:</strong> 11.11.2025 | <strong>Відповіді:</strong> 5
-                </p>
-                <p>Давайте обговоримо останні прориви в поведінці NPC. Що ви думаєте про використання LLM для діалогів? Це майбутнє чи просто хайп?</p>
-                <p style="margin-top: 25px;">
-                    <a href="topic-1.html" style="text-decoration: none; font-weight: 700; background-image: var(--primary-gradient); background-clip: text; color: transparent; font-size: 1.1rem;">
-                        Читати далі та обговорити →
-                    </a>
-                </p>
-            </section>
-
-            <section class="content-section fade-in-on-scroll topic-item">
-                <h2>Питання: Як почати кар'єру в AI GameDev?</h2>
-                <p style="font-size: 0.95rem; color: var(--secondary-text-color); margin-bottom: 20px; opacity: 0.8;">
-                    <strong>Автор:</strong> new_dev | <strong>Дата:</strong> 10.11.2025 | <strong>Відповіді:</strong> 12
-                </p>
-                <p>Я студент і хочу працювати в цій галузі. З чого почати? Які інструменти вчити? Потрібна порада від досвідчених розробників.</p>
-                <p style="margin-top: 25px;">
-                    <a href="topic-2.html" style="text-decoration: none; font-weight: 700; background-image: var(--primary-gradient); background-clip: text; color: transparent; font-size: 1.1rem;">
-                        Читати далі та обговорити →
-                    </a>
-                </p>
-            </section>
-
-            <section class="content-section fade-in-on-scroll topic-item">
-                <h2>Інструменти: Огляд Unity Sentis</h2>
-                <p style="font-size: 0.95rem; color: var(--secondary-text-color); margin-bottom: 20px; opacity: 0.8;">
-                    <strong>Автор:</strong> unity_fan | <strong>Дата:</strong> 09.11.2025 | <strong>Відповіді:</strong> 3
-                </p>
-                <p>Хтось вже пробував Unity Sentis? Поділіться своїми враженнями та проєктами. Чи вартий він уваги? Кажуть, він оптимізований для мобільних.</p>
-                <p style="margin-top: 25px;">
-                    <a href="topic-3.html" style="text-decoration: none; font-weight: 700; background-image: var(--primary-gradient); background-clip: text; color: transparent; font-size: 1.1rem;">
-                        Читати далі та обговорити →
-                    </a>
-                </p>
-            </section>
-        </div>
-        <div id="no-results" class="fade-in-on-scroll" style="display: none; text-align: center; padding: 40px;">
-            <p style="font-size: 1.25rem; color: var(--secondary-text-color);">Схоже, тем за вашим запитом не знайдено.</p>
-        </div>
-        </main>
+    <div class="giscus-container fade-in-on-scroll">
+            
+            <script src="https://giscus.app/client.js"
+                data-repo="[ВАШ-НІК]/[ВАШ-РЕПО]"
+                data-repo-id="[ID ВАШОГО РЕПО]"
+                data-category="[НАЗВА ВАШОЇ КАТЕГОРІЇ]"
+                data-category-id="[ID ВАШОЇ КАТЕГОРІЇ]"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="uk"
+                crossorigin="anonymous"
+                async>
+            </script>
+    </div>
+        
+    </main>
     <footer class="footer">
         <div class="footer-content">
             
