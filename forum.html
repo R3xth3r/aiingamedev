@@ -521,35 +521,54 @@
             
             const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
             const body = document.body;
-            if (!themeToggleCheckbox) {
-                return;
-            }
+            if (!themeToggleCheckbox) { return; }
 
-            // 1. Функція для надсилання повідомлення у Giscus
-            function updateGiscusTheme(theme) {
-                // Знаходимо iframe Giscus
-                // Giscus автоматично додає цей клас 'giscus-frame'
-                const giscusIframe = document.querySelector('iframe.giscus-frame');
+            // --- Giscus Communication ---
+            let giscusIframe = null;
+            let isGiscusReady = false; // Прапор, що Giscus завантажився
+
+            function sendGiscusTheme(theme) {
+                // Якщо Giscus ще не готовий, не надсилаємо нічого.
+                // Він отримає тему, коли завантажиться (див. 'message' listener).
+                if (!isGiscusReady) {
+                    return;
+                }
                 
-                // Якщо iframe немає, нічого не робимо
                 if (!giscusIframe) {
+                    giscusIframe = document.querySelector('iframe.giscus-frame');
+                }
+                
+                if (!giscusIframe || !giscusIframe.contentWindow) {
+                    console.warn('Giscus iframe не знайдено, не можу змінити тему.');
                     return;
                 }
 
                 // Створюємо повідомлення, яке Giscus зрозуміє
-                const message = {
-                    giscus: {
-                        setConfig: {
-                            // Giscus очікує тему 'light' або 'dark'
-                            theme: theme
-                        }
-                    }
-                };
-
+                const message = { giscus: { setConfig: { theme: theme } } };
                 // Надсилаємо повідомлення в iframe
                 giscusIframe.contentWindow.postMessage(message, 'https://giscus.app');
             }
 
+            // Слухаємо повідомлення ВІД Giscus
+            window.addEventListener('message', (event) => {
+                // Переконуємось, що повідомлення прийшло саме від Giscus
+                if (event.origin !== 'https://giscus.app') {
+                    return; 
+                }
+                
+                // Як тільки Giscus надсилає перше повідомлення (зазвичай про висоту), 
+                // ми знаємо, що він "прокинувся"
+                if (event.data && event.data.giscus) {
+                    isGiscusReady = true; // Встановлюємо прапор
+                    
+                    // І негайно надсилаємо йому поточну тему сайту
+                    const currentTheme = body.classList.contains('dark') ? 'dark' : 'light';
+                    sendGiscusTheme(currentTheme);
+                }
+            });
+            // --- End Giscus ---
+
+            // --- Логіка Теми (без змін) ---
             const savedTheme = localStorage.getItem('theme');
             const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             let currentTheme;
@@ -563,6 +582,7 @@
             }
 
             function applyTheme(theme) {
+                // 1. Застосувати до сайту
                 if (theme === 'dark') {
                     body.classList.add('dark');
                     themeToggleCheckbox.checked = true;
@@ -571,10 +591,15 @@
                     themeToggleCheckbox.checked = false;
                 }
                 localStorage.setItem('theme', theme);
+                
+                // 2. Застосувати до Giscus
+                sendGiscusTheme(theme);
             }
 
+            // Застосувати початкову тему (це спрацює, щойно Giscus стане готовим)
             applyTheme(currentTheme);
 
+            // Слухати кліки
             themeToggleCheckbox.addEventListener('change', () => {
                 const newTheme = themeToggleCheckbox.checked ? 'dark' : 'light';
                 applyTheme(newTheme);
@@ -582,5 +607,6 @@
             
         });
     </script>
+    
     </body>
 </html>
