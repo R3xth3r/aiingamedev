@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Історія ШІ - AI in GameDev</title>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        
+        :root {
+            --primary-gradient: linear-gradient(45deg, #8a2be2, #e375e5);
+            --primary-color-start: #8a2be2;
+            --primary-color-end: #e375e5;
+            --light-bg: #ffd9fe;
+            --text-color: #333333;
+            --burger-text-color: linear-gradient(45deg, #8a2be2, #e375e5);
+            --secondary-text-color: #555555;
+            --border-color: #e0e0e0;
+            --header-height: 70px;
+            --footer-bg: #222222;
+            --footer-text-color: #f0f0f0;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --popup-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); 
+        }
+
+        /* ... (Увесь ваш старий CSS .header, .logo, .body і т.д. ... */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            line-height: 1.6;
+            background-image: linear-gradient(to bottom, #ffffff, #f2e3ff);
+            background-attachment: fixed;
+            color: var(--text-color);
+            scroll-behavior: smooth;
+            transition: background-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            height: var(--header-height);
+            background-color: #ffffff;
+            box-shadow: var(--box-shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            background-image: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .burger-menu {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            z-index: 102;
+            padding: 1px;
+        }
+
+        .burger-menu .line {
+            width: 100%;
+            height: 3px;
+            background-image: var(--primary-gradient);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .burger-menu.open .line1 { transform: rotate(45deg) translate(5px, 6px); background-image: var(--primary-gradient); }
+        .burger-menu.open .line2 { opacity: 0; }
+        .burger-menu.open .line3 { transform: rotate(-45deg) translate(5px, -6px); background-image: var(--primary-gradient); }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 350px;
+            height: 100vh;
+            background-color: #ffffff;
+            box-shadow: -8px 0 20px rgba(0, 0, 0, 0.15);
+            transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.1), background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .nav-links.open { right: 0; }
+        .nav-links li { margin: 25px 0; width: 100%; text-align: center; }
+
+        .nav-links a {
+            font-family: 'Nunito', sans-serif;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.3rem;
+            font-weight: 1000;
+            padding: 12px 25px; 
+            display: block;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-image: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover { background-image: var(--primary-gradient); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .nav-links a:hover::after { width: 70%; }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+        }
+
+        .overlay.open { display: block; opacity: 1; }
+
+        .main-content {
+            padding: calc(var(--header-height) + 40px) 20px 60px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 50px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            background-image: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--secondary-text-color);
+            max-width: 700px;
+            margin: 0 auto;
+            transition: color 0.3s ease;
+        }
+        
+        /* Блоки з контентом */
+        .content-section {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .content-section h2 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.2rem;
+            border-bottom-width: 3px;
+            border-bottom-style: solid;
+            border-image: var(--primary-gradient) 1;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            background-image: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            transition: color 0.3s ease;
+        }
+        
+        .content-section p {
+            font-size: 1.20rem;
+            color: var(--secondary-text-color);
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+        /* Посилання на джерело */
+        .source-link {
+            display: inline-block;
+            font-weight: 700;
+            text-decoration: none;
+            background-image: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-top: 15px;
+            font-size: 1.1rem;
+        }
+
+
+        .footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text-color);
+            padding: 50px 30px; 
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* ... (Решта .footer CSS) ... */
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between; 
+            align-items: flex-start; 
+            flex-wrap: wrap;
+            gap: 30px; 
+        }
+        .footer-left { flex: 1; min-width: 250px; }
+        .footer-left h3 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            background-image: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            padding-bottom: 5px;
+        }
+        .footer-left p {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--footer-text-color);
+            transition: color 0.3s ease;
+        }
+        .footer-left a { color: var(--footer-text-color); text-decoration: none; transition: color 0.3s ease; }
+        .footer-left a:hover { color: var(--primary-color-end); background-image: none; text-decoration: underline; }
+        .footer-right { flex: 1; min-width: 250px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px; }
+        .footer-info { text-align: center; font-size: 0.9rem; line-height: 1.5; }
+        .footer-info p { margin: 0; transition: color 0.3s ease; }
+        .footer-right .footer-links { margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; }
+        .footer-right .footer-links a { color: var(--footer-text-color); text-decoration: none; margin-left: 0; transition: color 0.3s ease; }
+        .footer-right .footer-links a:hover { background-image: var(--primary-gradient); background-clip: text; -webkit-background-clip: text; color: transparent; }
+
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* ... (Код темної теми і перемикача) ... */
+        body.dark {
+            --primary-gradient: linear-gradient(45deg, #9b59b6, #e375e5);
+            --primary-color-start: #9b59b6;
+            --primary-color-end: #e375e5;
+            --light-bg: #4f4f4f; 
+            --text-color: #f0f0f0; 
+            --burger-text-color: linear-gradient(45deg, #9b59b6, #e375e5);
+            --secondary-text-color: #cccccc; 
+            --border-color: #555555;
+            --header-height: 70px;
+            --footer-bg: #1a1a1a;
+            --footer-text-color: #f0f0f0;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            --popup-shadow: 0 8px 25px rgba(0, 0, 0, 0.35); /* Темна тінь */
+        }
+        body.dark { background-image: linear-gradient(to bottom, #333333, #1e1e1e); }
+        body.dark .header,
+        body.dark .nav-links,
+        body.dark .hero,
+        body.dark .content-section { 
+            background-color: #2c2c2c;
+        }
+        body.dark .nav-links a { color: var(--text-color); }
+        body.dark .overlay { background-color: rgba(0, 0, 0, 0.7); }
+        
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+            margin-right: 15px; 
+        }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 28px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--primary-color-start); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+
+        /* ===== НОВІ СТИЛІ ДЛЯ ТАЙМЛАЙНУ (Версія 4.1 - Виправлена) ===== */
+        .timeline-wrapper {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+
+        .timeline-container {
+            width: 100%;
+            overflow-x: auto; 
+            overflow-y: hidden; /* Вертикальний оверфлоу сховано */
+            padding: 20px 0; 
+            position: relative;
+            min-height: 250px; /* Мінімальна висота */
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: row;
+            position: absolute;
+            top: 50%; /* Центруємо лінію */
+            left: 0;
+            transform: translateY(-50%); 
+            min-width: 1800px; 
+            padding: 0 50px; 
+            height: 150px; /* Висота самої лінії та тексту */
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%; 
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 4px;
+            background-color: var(--border-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 300px; /* Ширина однієї події */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Центруємо по вертикалі */
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;  
+            height: 24px;
+            border-radius: 50%;
+            background-image: var(--primary-gradient); /* Градієнтна крапка */
+            border: 4px solid #ffffff; 
+            transition: border-color 0.3s ease, transform 0.2s ease;
+            z-index: 10;
+            cursor: pointer;
+        }
+        
+        .timeline-dot:hover {
+            transform: translate(-50%, -50%) scale(1.2); 
+        }
+
+        .timeline-content {
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            width: 260px; 
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: var(--popup-shadow); 
+            padding: 15px;
+            z-index: 20; 
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.3s ease;
+            pointer-events: none; 
+        }
+
+        /* ПОЯВА ПРИ НАВЕДЕННІ НА КРАПКУ */
+        .timeline-dot:hover ~ .timeline-content {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .timeline-app { /* Назва гри */
+            position: absolute;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            padding: 0 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: color 0.3s ease;
+            z-index: 5;
+            white-space: nowrap; 
+        }
+
+        .timeline-year { /* Рік */
+            position: absolute;
+            font-weight: 400;
+            font-size: 1.0rem;
+            color: var(--secondary-text-color);
+            background: #ffffff; 
+            padding: 0 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            z-index: 5;
+        }
+        
+        .timeline-content p {
+            font-size: 0.95rem;
+            color: var(--secondary-text-color);
+            transition: color 0.3s ease;
+            margin-bottom: 0;
+        }
+
+        /* ЧЕРГУВАННЯ */
+        /* Непарні (1, 3, 5...) - ВГОРУ */
+        .timeline-item:nth-child(odd) .timeline-content {
+            bottom: 70px; /* Спливаючий блок */
+        }
+        .timeline-item:nth-child(odd) .timeline-app {
+            bottom: 30px; /* Назва гри (над лінією) */
+        }
+        .timeline-item:nth-child(odd) .timeline-year {
+            top: 30px; /* Рік (під лінією) */
+        }
+
+
+        /* Парні (2, 4, 6...) - ВНИЗ */
+        .timeline-item:nth-child(even) .timeline-content {
+            top: 70px; /* Спливаючий блок */
+        }
+        .timeline-item:nth-child(even) .timeline-app {
+            top: 30px; /* Назва гри (під лінією) */
+        }
+         .timeline-item:nth-child(even) .timeline-year {
+            bottom: 30px; /* Рік (над лінією) */
+        }
+        
+        /* Нейтральний скролбар */
+        .timeline-container::-webkit-scrollbar {
+            height: 10px;
+        }
+        .timeline-container::-webkit-scrollbar-track {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+        .timeline-container::-webkit-scrollbar-thumb {
+            background: #aaa; 
+            border-radius: 10px;
+        }
+        .timeline-container::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+        .timeline-container {
+            scrollbar-width: thin;
+            scrollbar-color: #aaa var(--border-color);
+        }
+
+        /* --- Правила темної теми --- */
+        body.dark .timeline-wrapper { background-color: #2c2c2c; }
+        body.dark .timeline::before { background-color: #444; }
+        body.dark .timeline-dot { border-color: #2c2c2c; } 
+        body.dark .timeline-year { background: #2c2c2c; }
+        body.dark .timeline-content { background-color: #3b3b3b; } 
+        
+        /* ===== КІНЕЦЬ НОВИХ СТИЛІВ ===== */
+    </style>
+
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo">AI in GameDev</a>
+        
+        <nav>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Головна</a></li>
+                <li><a href="about.html">Сутність</a></li>
+                <li><a href="key.html">Застосування</a></li>
+                <li><a href="tools.html">Технології</a></li>
+                <li><a href="trends.html">Тренди</a></li>
+                <li><a href="forum.html">Форум</a></li>
+            </ul>
+        </nav>
+
+        <div style="display: flex; align-items: center;">
+            <label class="theme-switch" for="theme-toggle-checkbox" aria-label="Toggle dark mode">
+                <input type="checkbox" id="theme-toggle-checkbox">
+                <span class="slider"></span>
+            </label>
+            <div class="burger-menu" id="burger-menu">
+                <div class="line line1"></div>
+                <div class="line line2"></div>
+                <div class="line line3"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main class="main-content">
+        
+        <section class="hero fade-in-on-scroll" id="history-hero">
+            <h1>Історія ШІ в Іграх</h1>
+            <p>Від примітивних привидів Pac-Man до нейромереж, що керують світами</p>
+        </section>
+
+        <div class="timeline-wrapper fade-in-on-scroll">
+            <div class="timeline-container">
+                <div class="timeline">
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">1980</div>
+                        <div class="timeline-app">Pac-Man</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p>Кожен привид мав унікальний алгоритм, створюючи ілюзію командної роботи.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">1998</div>
+                        <div class="timeline-app">Half-Life</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p>Солдати H.E.C.U. використовували командну тактику, флангові обходи та гранати.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">2001</div>
+                        <div class="timeline-app">Black & White</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p>Гравець "навчав" свою істоту (Титана) бути доброю чи злою за допомогою підкріплення.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">2005</div>
+                        <div class="timeline-app">F.E.A.R.</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p>Вороги використовували GOAP, щоб динамічно реагувати на оточення (перевертати столи).</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">2007</div>
+                        <div class="timeline-app">S.T.A.L.K.E.R.</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p>Система 'A-Life' симулювала життя всієї Зони, навіть коли гравець цього не бачив.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">2014</div>
+                        <div class="timeline-app">Alien: Isolation</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p>"Дворівневий" ШІ: "Директор" давав підказки "Ксеноморфу", який полював сам.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">2018</div>
+                        <div class="timeline-app">Red Dead Redemption 2</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p>Сотні NPC та тварин отримали власні розпорядки дня, що створило "живий світ".</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">2023+</div>
+                        <div class="timeline-app">NVIDIA ACE & LLMs</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p>Ера генеративного ШІ. NPC починають генерувати діалоги та анімації "на льоту".</p>
+                        </div>
+                    </div>
+
+                </div> </div> </div> <section class="content-section fade-in-on-scroll" id="history-1980">
+            <h2>1980: Pac-Man</h2>
+            <p>Хоча це виглядає просто, Pac-Man був революційним. Замість того, щоб вороги рухалися хаотично, кожен із чотирьох привидів (Блінкі, Пінкі, Інкі та Клайд) мав унікальний алгоритм поведінки. Блінкі (червоний) прямо переслідував гравця. Пінкі (рожевий) намагався зайти "наперед" гравця, влаштовуючи засідку. Інкі (блакитний) був непередбачуваним, а Клайд (помаранчевий) боявся і тікав, коли Pac-Man наближався. Це створювало ілюзію складної, скоординованої атаки.</p>
+            <a href="https://pacman.holenet.info/" target="_blank" class="source-link">Джерело: The Pac-Man Dossier →</a>
+        </section>
+        
+        <section class="content-section fade-in-on-scroll" id="history-1998">
+            <h2>1998: Half-Life</h2>
+            <p>Valve встановила новий стандарт для шутерів. Замість того, щоб просто бігти на гравця, солдати H.E.C.U. діяли як загін. Вони використовували "Squad AI" — вони спілкувалися між собою ("Бачу його!", "Кидаю гранату!"), обходили з флангів, використовували гранати, щоб "викурити" гравця з укриття, і відступали, якщо отримували поранення. Це змушувало гравця думати тактично.</p>
+            <a href="https://www.youtube.com/watch?v=cOSCBMHGE18" target="_blank" class="source-link">Джерело: AI of Half-Life →</a>
+        </section>
+
+        <section class="content-section fade-in-on-scroll" id="history-2001">
+            <h2>2001: Black & White</h2>
+            <p>Проєкт Пітера Моліньє був амбітним експериментом з машинним навчанням. Гравець керував гігантською істотою (Титаном) і "навчав" її за допомогою позитивного та негативного підкріплення. Якщо Титан їв селянина, а ви його "гладили" — він розумів, що це добре. Якщо "били" — він розумів, що це погано. З часом Титан розвивав власну особистість, засновану на діях гравця.</p>
+            <a href="https://www.gamespot.com/reviews/black-and-white-review/1900-2702884/" target="_blank" class="source-link">Джерело: GameSpot Review →</a>
+        </section>
+
+        <section class="content-section fade-in-on-scroll" id="history-2005">
+            <h2>2005: F.E.A.R.</h2>
+            <p>Навіть сьогодні ШІ у F.E.A.R. вважається одним з найкращих в історії шутерів. Вороги використовували "Планувальник дій, орієнтований на мету" (GOAP). Замість жорстких "станів" (як у FSM), ШІ мав "мету" (наприклад, "вбити гравця") і набір "дій" (стріляти, сховатися, кинути гранату, перевернути стіл). Він динамічно обирав найкращу послідовність дій, щоб досягти мети в поточній ситуації, що робило бої неймовірно непередбачуваними.</p>
+            <a href="https://www.gamedevs.org/uploads/three-states-plan-ai-of-fear.pdf" target="_blank" class="source-link">Джерело: GOAP in F.E.A.R. →</a>
+        </section>
+
+        <section class="content-section fade-in-on-scroll" id="history-2007">
+            <h2>2007: S.T.A.L.K.E.R.</h2>
+            <p>GSC Game World створила "Симуляцію Життя" (A-Life). Це був ШІ, що керував не лише ворогами в бою, а всією екосистемою Зони 24/7. Поки гравець спав або був на іншому кінці карти, сталкери-NPC йшли в рейди за артефактами, монстри полювали один на одного, а фракції воювали за табори. Це створювало відчуття, що світ живе власним життям, а не просто чекає на гравця.</p>
+            <a href="https://news.xbox.com/en-us/2020/07/23/stalker-2-is-coming-to-xbox-series-x/" target="_blank" class="source-link">Джерело: PC Gamer on A-Life →</a>
+        </section>
+
+        <section class="content-section fade-in-on-scroll" id="history-2014">
+            <h2>2014: Alien: Isolation</h2>
+            <p>Розробники в Creative Assembly створили інноваційний "дворівневий" ШІ. Був "Директор" (або "Режисер"), який знав, де знаходиться гравець, але не керував Чужим напряму. Він лише давав "підказки" другому ШІ — самому Ксеноморфу. А вже Ксеноморф, базуючись на цих підказках та власних "почуттях" (слух, зір), самостійно вирішував, де шукати гравця. Це дозволило уникнути "чітерства", але зберегло постійне відчуття небезпеки.</p>
+            <a href="https://www.gamedeveloper.com/design/the-perfect-organism-the-ai-of-alien-isolation" target="_blank" class="source-link">Джерело: GDC Talk on Alien AI →</a>
+        </section>
+
+        <section class="content-section fade-in-on-scroll" id="history-2018">
+            <h2>2018: Red Dead Redemption 2</h2>
+            <p>Rockstar Games встановила новий стандарт для "живого світу". Кожен NPC у грі мав свій унікальний розпорядок дня, роботу та реакції. Вони пам'ятали попередні дії гравця, коментували його одяг, віталися або тікали. Тварини створювали цілі екосистеми: хижаки полювали на травоїдних, а стерв'ятники зліталися на трупи. Це ШІ, мета якого — не кинути виклик, а створити максимальне занурення.</p>
+            <a href="https://en.wikipedia.org/wiki/Development_of_Red_Dead_Redemption_2" target="_blank" class="source-link">Джерело: IGN on RDR2's Ecosystem →</a>
+        </section>
+
+        <section class="content-section fade-in-on-scroll" id="history-2023">
+            <h2>2023+: Ера Генеративного ШІ (NVIDIA ACE)</h2>
+            <p>Це поточний "Святий Грааль" розробки. Замість того, щоб вручну записувати тисячі рядків діалогів, розробники використовують Великі Мовні Моделі (LLM). Технології, як NVIDIA ACE, дозволяють гравцю говорити в мікрофон, а NPC відповідатиме унікальним, згенерованим "на льоту" голосом. Це майбутнє квестів та взаємодії з персонажами, яке зробить кожне проходження гри унікальним.</p>
+            <a href="https://www.nvidia.com/en-us/geforce/news/nvidia-ace-for-games-generative-ai-npcs/" target="_blank" class="source-link">Джерело: NVIDIA ACE →</a>
+        </section>
+
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <p>Email: ananas200825@gmail.com</p>
+                <p>Телефон: +380 (68) 402 93 42</p>
+                <p>Адреса: Україна, м. Вінниця, Хмельницьке Шосе 95</p>
+                <p>Працюємо з 8:00 по 20:00</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-info">
+                    <p>&copy; 2025 AI in GameDev. Всі права захищено.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Головна</a>
+                    <a href="privacy.html">Політика конфіденційності</a>
+                    <a href="terms.html">Умови використання</a>
+                </div>
+                <div class="footer-info">
+                    <p>Розроблено в рамках навчального проєкту</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .footer-content { gap: 15px; }
+        .footer-contacts p { margin: 5px 0; font-size: 0.95rem; line-height: 1.5; }
+        .footer-contacts p a:hover { text-decoration: underline; background-image: none; color: var(--primary-color-end); }
+    </style>
+
+    <script>
+        const burgerMenu = document.getElementById('burger-menu');
+        const navLinks = document.getElementById('nav-links');
+        const overlay = document.getElementById('overlay');
+        function toggleMenu() {
+            burgerMenu.classList.toggle('open');
+            navLinks.classList.toggle('open');
+            overlay.classList.toggle('open');
+            document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+        }
+        burgerMenu.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const elementsToFadeIn = document.querySelectorAll('.fade-in-on-scroll');
+            if (!elementsToFadeIn.length) return;
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { entry.target.classList.add('is-visible'); } 
+                    else { entry.target.classList.remove('is-visible'); }
+                });
+            };
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+            elementsToFadeIn.forEach(element => { observer.observe(element); });
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- ЛОГІКА ТЕМИ ---
+            const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
+            const body = document.body;
+            if (themeToggleCheckbox) {
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                let currentTheme;
+                if (savedTheme) { currentTheme = savedTheme; } 
+                else if (systemPrefersDark) { currentTheme = 'dark'; } 
+                else { currentTheme = 'light'; }
+                
+                function applyTheme(theme) {
+                    if (theme === 'dark') {
+                        body.classList.add('dark');
+                        themeToggleCheckbox.checked = true;
+                    } else {
+                        body.classList.remove('dark');
+                        themeToggleCheckbox.checked = false;
+                    }
+                    localStorage.setItem('theme', theme);
+                }
+                applyTheme(currentTheme);
+                themeToggleCheckbox.addEventListener('change', () => {
+                    const newTheme = themeToggleCheckbox.checked ? 'dark' : 'light';
+                    applyTheme(newTheme);
+                });
+            }
+            
+        });
+    </script>
+</body>
+</html>

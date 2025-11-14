@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Процедурна Генерація - AI in GameDev</title>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        
+        /* --- (ВЕСЬ ВАШ CSS З ІНШИХ ФАЙЛІВ) --- */
+        :root {
+            --primary-gradient: linear-gradient(45deg, #8a2be2, #e375e5);
+            --primary-color-start: #8a2be2;
+            --primary-color-end: #e375e5;
+            --light-bg: #ffd9fe;
+            --text-color: #333333;
+            --burger-text-color: linear-gradient(45deg, #8a2be2, #e375e5);
+            --secondary-text-color: #555555;
+            --border-color: #e0e0e0;
+            --header-height: 70px;
+            --footer-bg: #222222;
+            --footer-text-color: #f0f0f0;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            line-height: 1.6;
+            background-image: linear-gradient(to bottom, #ffffff, #f2e3ff);
+            background-attachment: fixed;
+            color: var(--text-color);
+            scroll-behavior: smooth;
+            transition: background-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            height: var(--header-height);
+            background-color: #ffffff;
+            box-shadow: var(--box-shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            background-image: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .burger-menu {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            z-index: 102;
+            padding: 1px;
+        }
+
+        .burger-menu .line {
+            width: 100%;
+            height: 3px;
+            background-image: var(--primary-gradient);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .burger-menu.open .line1 { transform: rotate(45deg) translate(5px, 6px); background-image: var(--primary-gradient); }
+        .burger-menu.open .line2 { opacity: 0; }
+        .burger-menu.open .line3 { transform: rotate(-45deg) translate(5px, -6px); background-image: var(--primary-gradient); }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 350px;
+            height: 100vh;
+            background-color: #ffffff;
+            box-shadow: -8px 0 20px rgba(0, 0, 0, 0.15);
+            transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.1), background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .nav-links.open { right: 0; }
+        .nav-links li { margin: 25px 0; width: 100%; text-align: center; }
+
+        .nav-links a {
+            font-family: 'Nunito', sans-serif;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.3rem;
+            font-weight: 1000;
+            padding: 12px 25px; 
+            display: block;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-image: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover { background-image: var(--primary-gradient); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .nav-links a:hover::after { width: 70%; }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+        }
+
+        .overlay.open { display: block; opacity: 1; }
+
+        .main-content {
+            padding: calc(var(--header-height) + 40px) 20px 60px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 50px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            background-image: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--secondary-text-color);
+            max-width: 700px;
+            margin: 0 auto;
+            transition: color 0.3s ease;
+        }
+
+        /* Стилі для контенту (взяті з about_explain.html) */
+        .content-section {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .content-section:first-of-type {
+            margin-top: 0; /* Прибираємо відступ для першої секції */
+        }
+
+        .content-section h2 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.2rem;
+            border-bottom-width: 3px;
+            border-bottom-style: solid;
+            border-image: var(--primary-gradient) 1;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            background-image: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            transition: color 0.3s ease;
+        }
+        
+        .content-section h3 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .content-section p, .content-section ul {
+            font-size: 1.20rem;
+            color: var(--secondary-text-color);
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+        
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .content-section ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+        
+        .content-section ul li::before {
+            content: '-';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color-start);
+            font-size: 1.1em;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+        /* --- Кінець стилів контенту --- */
+
+
+        .footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text-color);
+            padding: 50px 30px; 
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between; 
+            align-items: flex-start; 
+            flex-wrap: wrap;
+            gap: 30px; 
+        }
+        .footer-left { flex: 1; min-width: 250px; }
+        .footer-left p {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--footer-text-color);
+            transition: color 0.3s ease;
+        }
+        .footer-left a { color: var(--footer-text-color); text-decoration: none; transition: color 0.3s ease; }
+        .footer-left a:hover { color: var(--primary-color-end); background-image: none; text-decoration: underline; }
+        .footer-right { flex: 1; min-width: 250px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px; }
+        .footer-info { text-align: center; font-size: 0.9rem; line-height: 1.5; }
+        .footer-info p { margin: 0; transition: color 0.3s ease; }
+        .footer-right .footer-links { margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; }
+        .footer-right .footer-links a { color: var(--footer-text-color); text-decoration: none; margin-left: 0; transition: color 0.3s ease; }
+        .footer-right .footer-links a:hover { background-image: var(--primary-gradient); background-clip: text; -webkit-background-clip: text; color: transparent; }
+
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* --- КОД ТЕМНОЇ ТЕМИ --- */
+        body.dark {
+            --primary-gradient: linear-gradient(45deg, #9b59b6, #e375e5);
+            --primary-color-start: #9b59b6;
+            --primary-color-end: #e375e5;
+            --light-bg: #4f4f4f; 
+            --text-color: #f0f0f0; 
+            --burger-text-color: linear-gradient(45deg, #9b59b6, #e375e5);
+            --secondary-text-color: #cccccc; 
+            --border-color: #555555;
+            --header-height: 70px;
+            --footer-bg: #1a1a1a;
+            --footer-text-color: #f0f0f0;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        body.dark { background-image: linear-gradient(to bottom, #333333, #1e1e1e); }
+        body.dark .header,
+        body.dark .nav-links,
+        body.dark .hero,
+        body.dark .content-section { /* Додано .content-section */
+            background-color: #2c2c2c;
+        }
+        body.dark .nav-links a { color: var(--text-color); }
+        body.dark .overlay { background-color: rgba(0, 0, 0, 0.7); }
+        
+        /* --- СТИЛІ ПЕРЕМИКАЧА --- */
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+            margin-right: 15px; 
+        }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 28px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--primary-color-start); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo">AI in GameDev</a>
+        
+        <nav>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Головна</a></li>
+                <li><a href="about.html">Сутність</a></li>
+                <li><a href="key.html">Застосування</a></li>
+                <li><a href="tools.html">Технології</a></li>
+                <li><a href="trends.html">Тренди</a></li>
+                <li><a href="forum.html">Форум</a></li>
+            </ul>
+        </nav>
+
+        <div style="display: flex; align-items: center;">
+            <label class="theme-switch" for="theme-toggle-checkbox" aria-label="Toggle dark mode">
+                <input type="checkbox" id="theme-toggle-checkbox">
+                <span class="slider"></span>
+            </label>
+            <div class="burger-menu" id="burger-menu">
+                <div class="line line1"></div>
+                <div class="line line2"></div>
+                <div class="line line3"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main class="main-content">
+        
+        <section class="hero fade-in-on-scroll" id="key-hero">
+            <h1>Процедурна Генерація</h1>
+            <p>Як створювати величезні світи за допомогою математики та алгоритмів</p>
+        </section>
+
+        <section class="content-section fade-in-on-scroll">
+            <h2>1. Що таке Процедурна Генерація Контенту (PCG)?</h2>
+            <p><b>Процедурна генерація (PCG)</b> — це створення ігрового контенту (карт, рівнів, предметів, персонажів) за допомогою алгоритмів, а не вручну. Замість того, щоб дизайнер годинами розставляв кожне дерево, він пише правило ("розміщувати дерева на зеленій поверхні, але не на скелях").</d>
+            <p>Коли ви запускаєте гру, комп'ютер використовує це правило та "початкове число" (seed), щоб згенерувати унікальний ліс. Якщо ви використаєте те саме "seed", ви отримаєте той самий ліс. Якщо зміните "seed" — ліс буде абсолютно новим, але створеним за тими ж правилами.</p>
+        </section>
+
+        <section class="content-section fade-in-on-scroll">
+            <h2>2. PCG проти Генеративного ШІ: в чому різниця?</h2>
+            <p>Це дуже важливе розрізнення. Ці терміни часто плутають, але вони означають різне:</p>
+            <ul>
+                <li><b>Процедурна Генерація (PCG) (старий підхід):</b>
+                Це чиста математика та логіка. Вона використовує алгоритми, як-от "Шум Перліна", для створення ландшафтів. Вона не "вчиться" і не "розуміє" контент. Вона просто виконує чіткі інструкції, які написав програміст.</li>
+                
+                <li><b>Генеративний ШІ (новий підхід):</b>
+                Це нейромережі (як-от Stable Diffusion або LLM). Вони "вчаться" на величезних обсягах даних (тисячах зображень, текстів). Вони "розуміють" контекст і можуть створювати щось нове за текстовим запитом (наприклад, "створи реалістичну текстуру кам'яної стіни").</li>
+            </ul>
+            <p>Простіше кажучи, PCG — це інструмент, якому потрібна інструкція. Генеративний ШІ — це партнер, якому потрібна ідея.</p>
+        </section>
+
+        <section class="content-section fade-in-on-scroll">
+            <h2>3. Легендарні приклади PCG</h2>
+            <h3>Minecraft (Світи)</h3>
+            <p>Кожен світ у *Minecraft* — це класичний приклад PCG. Гра бере "seed" і за допомогою алгоритмів шуму генерує гори, річки, печери та біоми. Світ практично нескінченний, і жоден дизайнер не створював його вручну. Все, що ви бачите, — це результат роботи алгоритму.</p>
+            <h3>No Man's Sky (Галактика)</h3>
+            <p>Розробники *No Man's Sky* довели PCG до абсолюту. Вони створили алгоритми, які генерують не просто карти, а цілі планети, кожна зі своєю унікальною флорою, фауною та кліматом. Всі 18 квінтильйонів планет у грі — це результат роботи PCG, що дозволило команді з кількох людей створити цілу галактику.</p>
+            <h3>Borderlands (Зброя)</h3>
+            <p>PCG використовується не лише для карт. У *Borderlands* є "мільйони" видів зброї. Насправді, дизайнери створили набір компонентів (ствол, приклад, приціл, магазин) та правил їх поєднання. Гра процедурно комбінує ці частини, створюючи зброю з унікальними характеристиками та зовнішнім виглядом.</p>
+        </section>
+
+    </main>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <p>Email: ananas200825@gmail.com</p>
+                <p>Телефон: +380 (68) 402 93 42</p>
+                <p>Адреса: Україна, м. Вінниця, Хмельницьке Шосе 95</p>
+                <p>Працюємо з 8:00 по 20:00</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-info">
+                    <p>&copy; 2025 AI in GameDev. Всі права захищено.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Головна</a>
+                    <a href="index_privacy.html">Політика конфіденційності</a>
+                    <a href="index_terms.html">Умови використання</a>
+                </div>
+                <div class="footer-info">
+                    <p>Розроблено в рамках навчального проєкту</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .footer-content { gap: 15px; }
+        .footer-contacts p { margin: 5px 0; font-size: 0.95rem; line-height: 1.5; }
+        .footer-contacts p a:hover { text-decoration: underline; background-image: none; color: var(--primary-color-end); }
+    </style>
+
+    <script>
+        // Скрипт Бургер-меню
+        const burgerMenu = document.getElementById('burger-menu');
+        const navLinks = document.getElementById('nav-links');
+        const overlay = document.getElementById('overlay');
+        function toggleMenu() {
+            burgerMenu.classList.toggle('open');
+            navLinks.classList.toggle('open');
+            overlay.classList.toggle('open');
+            document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+        }
+        burgerMenu.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+    </script>
+    <script>
+        // Скрипт Анімації появи
+        document.addEventListener("DOMContentLoaded", function() {
+            const elementsToFadeIn = document.querySelectorAll('.fade-in-on-scroll');
+            if (!elementsToFadeIn.length) return;
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { entry.target.classList.add('is-visible'); } 
+                    else { entry.target.classList.remove('is-visible'); }
+                });
+            };
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+            elementsToFadeIn.forEach(element => { observer.observe(element); });
+        });
+    </script>
+    <script>
+        // Скрипт Темної теми
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
+            const body = document.body;
+            if (!themeToggleCheckbox) { return; }
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let currentTheme;
+            if (savedTheme) { currentTheme = savedTheme; } 
+            else if (systemPrefersDark) { currentTheme = 'dark'; } 
+            else { currentTheme = 'light'; }
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    body.classList.add('dark');
+                    themeToggleCheckbox.checked = true;
+                } else {
+                    body.classList.remove('dark');
+                    themeToggleCheckbox.checked = false;
+                }
+                localStorage.setItem('theme', theme);
+            }
+            applyTheme(currentTheme);
+            themeToggleCheckbox.addEventListener('change', () => {
+                const newTheme = themeToggleCheckbox.checked ? 'dark' : 'light';
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>
