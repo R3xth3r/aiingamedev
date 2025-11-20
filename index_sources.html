@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Тренди - AI in GameDev</title>
+        <title>Джерела та Посилання - AI in GameDev</title>
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        
+
+<style>
+
         :root {
             --primary-gradient: linear-gradient(45deg, #8a2be2, #e375e5);
             --primary-color-start: #8a2be2;
@@ -24,14 +24,7 @@
             --footer-text-color: #f0f0f0;
             --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-
-        /* ... (Увесь ваш старий CSS .header, .logo, .body і т.д. ... */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Nunito', sans-serif;
             line-height: 1.6;
@@ -41,7 +34,6 @@
             scroll-behavior: smooth;
             transition: background-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
         }
-        
         .header {
             display: flex;
             justify-content: space-between;
@@ -57,7 +49,6 @@
             z-index: 100;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
-
         .logo {
             font-family: 'Nunito', sans-serif;
             font-size: 1.8rem;
@@ -67,7 +58,6 @@
             background-clip: text;
             color: transparent;
         }
-
         .burger-menu {
             display: flex;
             flex-direction: column;
@@ -78,7 +68,6 @@
             z-index: 102;
             padding: 1px;
         }
-
         .burger-menu .line {
             width: 100%;
             height: 3px;
@@ -86,11 +75,9 @@
             border-radius: 2px;
             transition: all 0.3s ease;
         }
-
         .burger-menu.open .line1 { transform: rotate(45deg) translate(5px, 6px); background-image: var(--primary-gradient); }
         .burger-menu.open .line2 { opacity: 0; }
         .burger-menu.open .line3 { transform: rotate(-45deg) translate(5px, -6px); background-image: var(--primary-gradient); }
-
         .nav-links {
             list-style: none;
             display: flex;
@@ -107,10 +94,8 @@
             box-shadow: -8px 0 20px rgba(0, 0, 0, 0.15);
             transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.1), background-color 0.3s ease, box-shadow 0.3s ease;
         }
-
         .nav-links.open { right: 0; }
         .nav-links li { margin: 25px 0; width: 100%; text-align: center; }
-
         .nav-links a {
             font-family: 'Nunito', sans-serif;
             text-decoration: none;
@@ -122,7 +107,6 @@
             position: relative;
             transition: color 0.3s ease;
         }
-
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -134,10 +118,8 @@
             background-image: var(--primary-gradient);
             transition: width 0.3s ease;
         }
-
         .nav-links a:hover { background-image: var(--primary-gradient); background-clip: text; color: transparent; }
         .nav-links a:hover::after { width: 70%; }
-        
         .overlay {
             display: none;
             position: fixed;
@@ -149,15 +131,8 @@
             z-index: 99;
             transition: opacity 0.3s ease, background-color 0.3s ease;
         }
-
         .overlay.open { display: block; opacity: 1; }
-
-        .main-content {
-            padding: calc(var(--header-height) + 40px) 20px 60px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
+        .main-content { padding: calc(var(--header-height) + 40px) 20px 60px; max-width: 1000px; margin: 0 auto; }
         .hero {
             text-align: center;
             padding: 80px 30px;
@@ -167,7 +142,6 @@
             margin-bottom: 50px;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
-
         .hero h1 {
             font-family: 'Nunito', sans-serif;
             font-size: 3.2rem;
@@ -177,16 +151,7 @@
             color: transparent;
             line-height: 1.2;
         }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--secondary-text-color);
-            max-width: 700px;
-            margin: 0 auto;
-            transition: color 0.3s ease;
-        }
-
-        /* .content-section ЗАЛИШЕНО ДЛЯ СУМІСНОСТІ */
+        .hero p { font-size: 1.25rem; color: var(--secondary-text-color); max-width: 700px; margin: 0 auto; }
         .content-section {
             margin-top: 50px;
             padding: 30px;
@@ -195,7 +160,61 @@
             box-shadow: var(--box-shadow);
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
-
+        .content-section h2 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.2rem;
+            border-bottom-width: 3px;
+            border-bottom-style: solid;
+            border-image: var(--primary-gradient) 1;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            background-image: var(--primary-gradient);
+            background-clip: text;
+            color: transparent;
+        }
+        .content-section h3 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+        .content-section p, .content-section ul {
+            font-size: 1.20rem;
+            color: var(--secondary-text-color);
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+        .source-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .source-list li {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .source-list li::before {
+            color: var(--primary-color-start);
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .source-list a {
+            font-size: 1.20rem;
+            color: var(--text-color);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            word-break: break-all;
+        }
+        .source-list a:hover {
+            color: transparent;
+            background-image: var(--primary-gradient);
+            background-clip: text;
+            text-decoration: underline#c32de9;
+        }
         .footer {
             background-color: var(--footer-bg);
             color: var(--footer-text-color);
@@ -204,8 +223,6 @@
             margin-top: 60px;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
-        /* ... (Решта .footer CSS) ... */
         .footer-content {
             max-width: 1000px;
             margin: 0 auto;
@@ -227,13 +244,7 @@
             color: transparent;
             padding-bottom: 5px;
         }
-        .footer-left p {
-            margin-bottom: 10px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--footer-text-color);
-            transition: color 0.3s ease;
-        }
+        .footer-left p { margin-bottom: 10px; font-size: 0.95rem; line-height: 1.6; color: var(--footer-text-color); transition: color 0.3s ease; }
         .footer-left a { color: var(--footer-text-color); text-decoration: none; transition: color 0.3s ease; }
         .footer-left a:hover { color: var(--primary-color-end); background-image: none; text-decoration: underline; }
         .footer-right { flex: 1; min-width: 250px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px; }
@@ -242,15 +253,9 @@
         .footer-right .footer-links { margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; }
         .footer-right .footer-links a { color: var(--footer-text-color); text-decoration: none; margin-left: 0; transition: color 0.3s ease; }
         .footer-right .footer-links a:hover { background-image: var(--primary-gradient); background-clip: text; color: transparent; }
-
-        .fade-in-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
+        .fade-in-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .fade-in-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
-
-        /* ... (Код темної теми і перемикача) ... */
+        
         body.dark {
             --primary-gradient: linear-gradient(45deg, #9b59b6, #e375e5);
             --primary-color-start: #9b59b6;
@@ -269,9 +274,7 @@
         body.dark .header,
         body.dark .nav-links,
         body.dark .hero,
-        body.dark .content-section { 
-            background-color: #2c2c2c;
-        }
+        body.dark .content-section { background-color: #2c2c2c; }
         body.dark .nav-links a { color: var(--text-color); }
         body.dark .overlay { background-color: rgba(0, 0, 0, 0.7); }
         
@@ -307,94 +310,7 @@
         }
         input:checked + .slider { background-color: var(--primary-color-start); }
         input:checked + .slider:before { transform: translateX(22px); }
-
-
-        .trends-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-        }
-
-        .trend-card {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: var(--box-shadow);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .trend-image {
-            /* Зображення займає 2 частини */
-            flex: 2; 
-            min-height: 200px; 
-            background-color: #eee; /* Заглушка, поки зображення не завантажилось */
-            overflow: hidden; /* Додатково для заокруглених кутів (якщо знадобиться) */
-        }
-        
-        .trend-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Картинка буде заповнювати блок */
-            /* Додамо анімацію і для зображення, щоб не "блимало" */
-            transition: opacity 0.3s ease; 
-        }
-
-        .trend-content {
-            /* Текст займає 1 частину (1/3) */
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .trend-content h3 {
-            font-size: 1.4rem;
-            color: var(--text-color);
-            margin-bottom: 10px;
-            transition: color 0.3s ease;
-        }
-        
-        .trend-content p {
-            font-size: 1rem;
-            color: var(--secondary-text-color);
-            margin-bottom: 15px;
-            transition: color 0.3s ease;
-        }
-
-        .trend-content a {
-            font-weight: 700;
-            text-decoration: none;
-            background-image: var(--primary-gradient);
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Адаптація для мобільних */
-        @media (max-width: 900px) {
-            .trends-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .trends-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Правила для темної теми */
-        body.dark .trend-card {
-            background-color: #2c2c2c;
-        }
-
-        body.dark .trend-image {
-            background-color: #444; /* Темніша заглушка */
-        }
-        /* ===== КІНЕЦЬ ОНОВЛЕНИХ СТИЛІВ ===== */
-
+        /* --- Кінець універсального CSS --- */
     </style>
 
 </head>
@@ -431,81 +347,38 @@
     <div class="overlay" id="overlay"></div>
 
     <main class="main-content">
-        
-        <section class="hero fade-in-on-scroll" id="trends-hero">
-            <h1>Тренди та Майбутнє</h1>
-            <p>Що відбувається просто зараз і що чекає на нас завтра</p>
+        <section class="hero fade-in-on-scroll" id="home">
+            <h1>Джерела та Посилання</h1>
+            <p>Першоджерела інформації, використаної на сайті</p>
         </section>
 
-        <div class="trends-grid fade-in-on-scroll">
-            
-            <div class="trend-card">
-                <div class="trend-image">
-                    <img src="https://itc.ua/wp-content/uploads/2023/05/unreal-engine-5-2-procedural-content-generation-3-1920x1080-c104933a7397-770x433.jpg" alt="Процедурна Генерація">
-                </div>
-                <div class="trend-content">
-                    <h3>Процедурна Генерація</h3>
-                    <p>За та проти, обговорення фахівців Bloober, Ubisoft та GSU</p>
-                    <a href="https://gamedev.dou.ua/articles/procedural-generation-pros-and-cons/" target="_blank">Читати статтю →</a>
-                </div>
-            </div>
-            
-            <div class="trend-card">
-                <div class="trend-image">
-                    <img src="https://i.ytimg.com/vi/I5Gc5Rnnw3Q/maxresdefault.jpg" alt="Живі NPC">
-                </div>
-                <div class="trend-content">
-                    <h3>"Живі" NPC</h3>
-                    <p>Використання LLM для створення NPC, в Matrix Awakens</p>
-                    <a href="https://www.thefpsreview.com/2023/05/25/new-matrix-awakens-unreal-engine-5-demo-lets-players-talk-to-npcs-in-real-time/" target="_blank">Дізнатися більше →</a>
-                </div>
-            </div>
-            
-            <div class="trend-card">
-                <div class="trend-image">
-                    <img src="https://hostpro.ua/blog/wp-content/uploads/2023/06/unnamed-2023-06-08T103727.100.png" alt="AI-асистенти">
-                </div>
-                <div class="trend-content">
-                    <h3>AI-програмісти</h3>
-                    <p>6 кращих ШІ-інструментів, які дійсно допомагають</p>
-                    <a href="https://robotdreams.cc/uk/blog/349-6-naykrashchih-shi-instrumentiv-dlya-rozrobnika-radyat-aytivci" target="_blank">Огляд інструментів →</a>
-                </div>
-            </div>
-
-            <div class="trend-card">
-                <div class="trend-image">
-                    <img src="https://us.v-cdn.net/cdn-cgi/image/quality=80,format=auto,fit=scale-down,height=2000,width=2000/6036147/uploads/JPXTWTH6B93F/r-22-4-1-1200x675.jpg" alt="Адаптивний Геймплей">
-                </div>
-                <div class="trend-content">
-                    <h3>Адаптивний Геймплей</h3>
-                    <p>Динамічна складність: Огляд адаптивного ШІ у відеоіграх</p>
-                    <a href="https://blog.acer.com/ua/discussion/2123/dinamichna-skladnist-oglyad-adaptivnogo-shi-u-videoigrah" target="_blank">Як це працює →</a>
-                </div>
-            </div>
-
-            <div class="trend-card">
-                <div class="trend-image">
-                    <img src="https://external-preview.redd.it/nvidia-dlss-3-vs-amd-fsr-3-frame-generation-and-upscaling-v0-uLEPw7Y5drwJmapTOSJVKvz4OYEw_cA4h9oYPbMVa7I.jpg?format=pjpg&auto=webp&s=41eef2666355f3851e347a34c4032faf98b616f7" alt="Покращення Графіки">
-                </div>
-                <div class="trend-content">
-                    <h3>Покращення Графіки</h3>
-                    <p>Використання нейромереж (DLSS, FSR) для апскейлінгу зображення</p>
-                    <a href="https://gamedev.dou.ua/articles/all-about-upscaller-in-gamedev" target="_blank">Порівняння технологій →</a>
-                </div>
-            </div>
-
-            <div class="trend-card">
-                <div class="trend-image">
-                    <img src="https://wezom.com.ua/storage/blog/inner/Ec5j8mR29Wyjt6WONrPcYJvf41jQzeY2haLHt0Pl.jpg?v=1743160709" alt="Тестування за Допомогою ШІ">
-                </div>
-                <div class="trend-content">
-                    <h3>Тестування із ШІ</h3>
-                    <p>Як моделі ШІ знаходять баги швидше за людей</p>
-                    <a href="https://wezom.com.ua/ua/blog/yak-mi-vikoristovujemo-shi-dlya-revolyutsiynih-zmin-u-testuvanni-softu" target="_blank">Читати про QA →</a>
-                </div>
-            </div>
-
-        </div> </main>
+        <section class="content-section fade-in-on-scroll">
+            <h2>Джерела для розділу "Історія ШІ"</h2>
+            <ul class="source-list">
+                <li><a href="https://www.gamedevelopment.blog/game-ai-finite-state-machines/" target="_blank">Машини скінченних станів (FSM): Вступ до кінцевих автоматів у ігровій розробці</a></li>
+                <li><a href="https://dev.epicgames.com/community/learning/tutorials/qzZ2/unreal-engine-behavior-tree-theory" target="_blank">Дерева поведінки (Behavior Trees): Теорія від Epic Games</a></li>
+                <li><a href="https://www.redblobgames.com/pathfinding/a-star/introduction.html" target="_blank">Алгоритм A\*: Вступ до пошуку шляху (Наочне пояснення)</a></li>
+                <li><a href="https://cdn.fastly.steamstatic.com/apps/valve/2009/GDC2009_ReplayableCooperativeGameDesign_Left4Dead.pdf" target="_blank">AI Director (Left 4 Dead): Replayable Cooperative Game Design (GDC доповідь Valve)</a></li>
+                <li><a href="https://www.youtube.com/watch?v=VcIeAEm5FBk" target="_blank">Система A-Life (S.T.A.L.K.E.R.): STALKER A-Life EXPLAINED! (Детальний розбір)</a></li>
+                <li><a href="https://www.youtube.com/watch?v=JeYP9eyIl4E" target="_blank">Drivatar (Forza Motorsport): How Forza's Drivatar Actually Works (AI and Games)</a></li>
+                <li><a href="https://gamedev.dou.ua/articles/procedural-generation-pros-and-cons/" target="_blank">Процедурна Генерація: За та проти (Dou.ua)</a></li>
+                <li><a href="https://www.thefpsreview.com/2023/05/25/new-matrix-awakens-unreal-engine-5-demo-lets-players-talk-to-npcs-in-real-time/" target="_blank">"Живі" NPC: Використання LLM для створення NPC (TheFPSReview)</a></li>
+                <li><a href="https://robotdreams.cc/uk/blog/349-6-naykrashchih-shi-instrumentiv-dlya-rozrobnika-radyat-aytivci" target="_blank">AI-програмісти: 6 кращих ШІ-інструментів для розробника (RobotDreams)</a></li>
+                <li><a href="https://blog.acer.com/ua/discussion/2123/dinamichna-skladnist-oglyad-adaptivnogo-shi-u-videoigrah" target="_blank">Адаптивний Геймплей: Огляд динамічної складності (Acer Blog)</a></li>
+                <li><a href="https://gamedev.dou.ua/articles/all-about-upscaller-in-gamedev" target="_blank">Покращення Графіки: Все про апскейлери (Dou.ua)</a></li>
+                <li><a href="https://wezom.com.ua/ua/blog/yak-mi-vikoristovujemo-shi-dlya-revolyutsiynih-zmin-u-testuvanni-softu" target="_blank">Тестування із ШІ: Використання ШІ для змін у тестуванні софту (Wezom)</a></li>
+                <li><a href="https://pacman.holenet.info/" target="_blank">The Pac-Man Dossier (Про алгоритми привидів Pac-Man)</a></li>
+                <li><a href="https://www.youtube.com/watch?v=cOSCBMHGE18" target="_blank">AI of Half-Life (Відео про командний ШІ солдатів H.E.C.U.)</a></li>
+                <li><a href="https://www.gamespot.com/reviews/black-and-white-review/1900-2702884/" target="_blank">GameSpot Review (Огляд Black & White та механіки навчання Титана)</a></li>
+                <li><a href="https://www.gamedevs.org/uploads/three-states-plan-ai-of-fear.pdf" target="_blank">GOAP in F.E.A.R. (PDF про планувальник дій, орієнтований на мету)</a></li>
+                <li><a href="https://news.xbox.com/en-us/2020/07/23/stalker-2-is-coming-to-xbox-series-x/" target="_blank">PC Gamer on A-Life (Стаття про систему A-Life у S.T.A.L.K.E.R.)</a></li>
+                <li><a href="https://www.gamedeveloper.com/design/the-perfect-organism-the-ai-of-alien-isolation" target="_blank">GDC Talk on Alien AI (Обговорення дворівневого ШІ Ксеноморфа в Alien: Isolation)</a></li>
+                <li><a href="https://en.wikipedia.org/wiki/Development_of_Red_Dead_Redemption_2" target="_blank">IGN on RDR2's Ecosystem (Стаття про екосистему та "живий світ" Red Dead Redemption 2)</a></li>
+                <li><a href="https://www.nvidia.com/en-us/geforce/news/nvidia-ace-for-games-generative-ai-npcs/" target="_blank">NVIDIA ACE (Новини про генеративний ШІ та LLM для NPC)</a></li>
+            </ul>
+        </section>
+        
+    </main>
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-left">
